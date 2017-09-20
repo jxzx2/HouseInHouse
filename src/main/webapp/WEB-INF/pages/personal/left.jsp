@@ -34,24 +34,24 @@
                 <ul>
                     <shiro:hasPermission name="管理员">
 
-                        <li><a href="${ctx}/personal/order/findList?status=1" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/1/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_8">待签订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=6" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/6/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_9">退租订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=2" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/2/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_e">未通过订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=3" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/3/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_a">在期订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=4" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/4/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_b">过期订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=12" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/12/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_c">已删除订单</a></li>
-                        <li><a href="${ctx}/personal/order/findList?status=0" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/findPagingList/0/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_d">全部订单</a></li>
                     </shiro:hasPermission>
 
                     <shiro:hasPermission name="用户">
-                        <li><a href="${ctx}/personal/order/list" onclick="linkHighlighted(this)" target="main"
+                        <li><a href="${ctx}/personal/order/pagingList/1" onclick="linkHighlighted(this)" target="main"
                                id="aa_3">我的订单</a></li>
                         <li><a href="${ctx}/sysadmin/user/toview?hhUserId=${SessionUser.hhUserId}" onclick="linkHighlighted(this)"
                                target="main" id="aa_1">我的信息</a></li>

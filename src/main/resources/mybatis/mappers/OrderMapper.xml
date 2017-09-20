@@ -54,10 +54,10 @@
 
 
     <select id="findAll" resultMap="orderRM">
-       <include refid="orderAll"  /> order by create_time
+       <include refid="orderAll"  /> order by create_time desc
     </select>
     <select id="findOrdersByUserId" resultMap="orderRM">
-        <include refid="orderAll"  />AND u.hh_user_id=#{hhUserId} order by create_time
+        <include refid="orderAll"  />AND u.hh_user_id=#{hhUserId} order by create_time desc
     </select>
     <select id="findRolesByUserId" resultType="Role">
         select r.* from hh_role_user ru, hh_role r where ru.hh_role_id=r.hh_role_id and ru.hh_user_id=#{hhUserId}
@@ -120,7 +120,20 @@
        update hh_orders set hh_orders_status=#{status} where hh_Orders_id=#{hhOrdersId}
     </update>
     <select id="findOrdersByStatus" resultMap="orderRM">
-        <include refid="orderAll"  />AND o.hh_orders_Status=#{hhOrdersStatus}
+        <include refid="orderAll"  />AND o.hh_orders_Status=#{hhOrdersStatus} order by create_time desc
+    </select>
+    <select id="findPagingList" resultMap="orderRM">
+        <include refid="orderAll"  /> order by create_time desc limit #{perfix}, #{suffix}
+    </select>
+    <select id="findPagingListById" resultMap="orderRM">
+        <include refid="orderAll"  /> AND u.hh_user_id=#{hhUserId} order by create_time desc  limit #{perfix}, #{suffix}
+    </select>
+
+    <select id="findOrdersPagingByStatus" resultMap="orderRM">
+        <include refid="orderAll"  />AND o.hh_orders_Status=#{status} order by create_time desc limit #{perfix}, #{suffix}
+    </select>
+    <select id="findAllPaging" resultMap="orderRM">
+        <include refid="orderAll"  /> order by create_time desc limit #{perfix}, #{suffix}
     </select>
 
 </mapper>

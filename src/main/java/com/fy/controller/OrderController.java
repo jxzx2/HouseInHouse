@@ -4,6 +4,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.fy.Exception.MegException;
 import com.fy.pojo.HouseInfo;
 import com.fy.pojo.Order;
+import com.fy.pojo.Role;
 import com.fy.pojo.User;
 import com.fy.service.HouseInfoService;
 import com.fy.service.OrderService;
@@ -98,7 +99,7 @@ public class OrderController extends BaseController {
 
         Object ord = session.getAttribute("order");
         if (ord == null) {
-            return "login";// 用户未登入
+            return "redirect:/tologin";// 用户未登入
         }
 
         Order order = (Order) ord;
@@ -119,7 +120,7 @@ public class OrderController extends BaseController {
     public String createOrder(String hhOrdersId, int verfyCode, Order order, HttpSession session, Model model) {
         Object ord = session.getAttribute("order");
         if (ord == null) {//检查订单是否失效
-            return "redirect:/personal/order/login";// 用户未登入
+            return "redirect:/tologin";// 用户未登入
         }
 
 
@@ -152,23 +153,59 @@ public class OrderController extends BaseController {
         session.removeAttribute("code");
         return "redirect:/personal/order/list";
     }
-
     //全部订单
     @RequestMapping("/list")
     public String getOrderList(HttpSession session, Model model) {
 
-
         Object obj = session.getAttribute("SessionUser");
-
         if (obj == null) {//如果用户未登入就登入
             return "redirect:login";
         }
         User user = (User) obj;
+
         List<Order> orderList = orderService.findOrdersById(user);
         model.addAttribute("orderList", orderList);
 
 
         return "/personal/order/OrderList";
+
+    }
+
+
+    //全部订单
+    @RequestMapping("/pagingList/{index}")
+    public String getOrderPagingList(HttpSession session,@PathVariable() Integer index, Model model) {
+
+        Object obj = session.getAttribute("SessionUser");
+        if (obj == null) {//如果用户未登入就登入
+            return "redirect:login";
+        }
+        User user = (User) obj;
+
+        List<Order> orderList=null;
+
+        orderList = orderService.findPagingListById(user,index);
+
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("paging", index);
+
+        return "/personal/order/OrderList";
+
+    }
+    @RequestMapping("/findPagingList/{status}/{index}")
+    public String findOrderPagingList(@PathVariable() int status,@PathVariable()Integer index, Model model) {
+        List<Order> orderList = null;
+        if (status != 0) {
+            orderList = orderService.findOrdersPagingByStatus(status,index);
+
+        } else {
+            orderList = orderService.findAllPaging(index);
+
+        }
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("paging", index);
+        model.addAttribute("status", status);
+        return "/personal/order/OrderListM";
 
     }
 
@@ -182,6 +219,7 @@ public class OrderController extends BaseController {
             orderList = orderService.findAll();
 
         }
+
         model.addAttribute("orderList", orderList);
         return "/personal/order/OrderListM";
 
@@ -244,6 +282,16 @@ public class OrderController extends BaseController {
         }
         return "redirect:/personal/order/list";
     }
+
+
+
+
+
+
+
+
+
+
 
 
 }

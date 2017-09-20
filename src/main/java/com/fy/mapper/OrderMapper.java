@@ -31,5 +31,11 @@ public interface OrderMapper {
     HouseInfo findHouseInfoById(String houseInfoId);
 
 
+    List<Order> findPagingListById(@Param("hhUserId") String hhUserId, @Param("perfix") Integer perfix,@Param("suffix") Integer suffix);
+
+
+    List<Order> findOrdersPagingByStatus(@Param("status")int status, @Param("perfix")Integer perfix, @Param("suffix")Integer suffix);
+
+    List<Order> findAllPaging(@Param("perfix")Integer perfix, @Param("suffix")Integer suffix);
 }
 

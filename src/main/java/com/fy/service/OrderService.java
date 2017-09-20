@@ -3,6 +3,7 @@ package com.fy.service;
 import com.fy.Exception.MegException;
 import com.fy.pojo.HouseInfo;
 import com.fy.pojo.Order;
+import com.fy.pojo.Role;
 import com.fy.pojo.User;
 import org.springframework.stereotype.Service;
 import com.aliyuncs.exceptions.ClientException;
@@ -87,4 +88,25 @@ public interface OrderService {
     public HouseInfo findHouseInfoById(String houseInfoId);
 
     void auto();
+
+    /**
+     * 分页查询
+     * @param user
+     * @return
+     */
+
+    List<Order> findPagingListById(User user , Integer index );
+
+    /**
+     * 分页查询
+     * @param
+     * @return
+     */
+    List<Order> findOrdersPagingByStatus(int status, Integer index);
+    /**
+     * 分页查询
+     * @param
+     * @return
+     */
+    List<Order> findAllPaging(Integer index);
 }

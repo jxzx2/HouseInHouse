@@ -1,6 +1,9 @@
 package com.fy.controller;
 
+import com.fy.pojo.Order;
+import com.fy.pojo.Role;
 import com.fy.pojo.User;
+import com.fy.service.OrderService;
 import com.fy.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -8,6 +11,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.OrderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,6 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping("/tologin")
     //@ResponseBody
@@ -51,7 +59,25 @@ public class LoginController {
             subject.login(token);
             User user = (User) subject.getPrincipal();
             Session session = subject.getSession();
+            List<String> userRole=(List<String>) userService.findRoleIdList(user.getHhUserId());
+            List<Order> checkOutOrderList = new ArrayList<Order>();
+            List<Order> checkInOrderList = new ArrayList<Order>();
+            for (String roleName:userRole ) {
+                System.out.print(roleName);
+                if("1".equals(roleName)){
+                    int outStatus = 6;
+                    int inStatus = 1;
+                    checkOutOrderList = orderService.findOrdersByStatus(outStatus);
+                    checkInOrderList = orderService.findOrdersByStatus(inStatus);
+                    break;
+                }
+
+            }
+            model.addAttribute("checkOutOrderList", checkOutOrderList);
+            model.addAttribute("checkInOrderList", checkInOrderList);
+
             session.setAttribute("SessionUser",user);
+
 
             return "/home/fmain";
 

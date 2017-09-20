@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../baselist.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -5,6 +6,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>全部订单</title>
+    <style>
+    .a12 {
+        width: 40px;
+        height: 20px;
+        background-color: #27da93;
+        display: inline-block;
+        margin: 5px;
+    }
+
+    .a11 {
+        width: 40px;
+        height: 20px;
+        display: inline-block;
+        background-color: #8e8e8e;
+        margin: 5px;
+    }
+</style>
 
 </head>
 
@@ -20,7 +38,8 @@
                         <c:if test="${o.hhOrdersStatus!=12}">
                         <li id="delete"><a href="#" onclick="formSubmit('updateStatus/12','_self');this.blur();">删除</a>
                             </c:if>
-                        <li id="download"><a href="#" onclick="formSubmit('download','_self');this.blur();">下载订单报表</a></li>
+                        <li id="download"><a href="#" onclick="formSubmit('download','_self');this.blur();">下载订单报表</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -28,7 +47,7 @@
     </div>
 
     <div class="textbox-title">
-        <img src="../../staticfile/skin/default/images/icon/currency_yen.png"/>
+        <img src="${ctx}/staticfile/skin/default/images/icon/currency_yen.png"/>
         全部订单
     </div>
 
@@ -39,7 +58,8 @@
             <table id="ec_table" class="tableRegion" width="98%">
                 <thead>
                 <tr>
-                    <td class="tableHeader"><input type="checkbox" name="selid" onclick="checkAll('hhOrdersId',this)"></td>
+                    <td class="tableHeader"><input type="checkbox" name="selid" onclick="checkAll('hhOrdersId',this)">
+                    </td>
                     <td class="tableHeader">序号</td>
                     <td class="tableHeader">订单号</td>
                     <td class="tableHeader">订单状态</td>
@@ -59,37 +79,69 @@
                 <c:forEach items="${orderList}" var="o" varStatus="status">
 
 
-                            <tr class="odd" onmouseover="this.className='highlight'" onmouseout="this.className='odd'">
-                                <td><input type="checkbox" name="hhOrdersId" value="${o.hhOrdersId}"/></td>
-                                <td>${status.index+1}</td>
+                    <tr class="odd" onmouseover="this.className='highlight'" onmouseout="this.className='odd'">
+                        <td><input type="checkbox" name="hhOrdersId" value="${o.hhOrdersId}"/></td>
+                        <td>${status.index+1}</td>
 
-                                <td style="word-wrap: break-word;width:120px;"><a
-                                        href="dept/toview?id=${o.hhOrdersId}">${o.hhOrdersId}</a></td>
-                                <td><c:if test="${o.hhOrdersStatus==1}"><span style="color:red">订单审核中</span></c:if>
-                                    <c:if test="${o.hhOrdersStatus==2}"><span style="color:red">审核未通过</span></c:if>
-                                    <c:if test="${o.hhOrdersStatus==3}">已入住</c:if>
-                                    <c:if test="${o.hhOrdersStatus==4}">已退房</c:if>
-                                    <c:if test="${o.hhOrdersStatus==5}">已取消</c:if>
-                                    <c:if test="${o.hhOrdersStatus==12}">已删除</c:if>
-                                    <c:if test="${o.hhOrdersStatus==6}"><span style="color:red">退租审核中</span></c:if>
+                        <td style="word-wrap: break-word;width:120px;"><a
+                                href="dept/toview?id=${o.hhOrdersId}">${o.hhOrdersId}</a></td>
+                        <td><c:if test="${o.hhOrdersStatus==1}"><span style="color:red">订单审核中</span></c:if>
+                            <c:if test="${o.hhOrdersStatus==2}"><span style="color:red">审核未通过</span></c:if>
+                            <c:if test="${o.hhOrdersStatus==3}">已入住</c:if>
+                            <c:if test="${o.hhOrdersStatus==4}">已退房</c:if>
+                            <c:if test="${o.hhOrdersStatus==5}">已取消</c:if>
+                            <c:if test="${o.hhOrdersStatus==12}">已删除</c:if>
+                            <c:if test="${o.hhOrdersStatus==6}"><span style="color:red">退租审核中</span></c:if>
 
-                                </td>
+                        </td>
 
-                                <td style="word-wrap: break-word;width:120px;">${o.houseInfo.hhHouseId}12</td>
-                                <td>${o.houseInfo.hhHouseVillage}</td>
-                                <td>${o.houseInfo.hhHouseAddress}</td>
+                        <td style="word-wrap: break-word;width:120px;">${o.houseInfo.hhHouseId}12</td>
+                        <td>${o.houseInfo.hhHouseVillage}</td>
+                        <td>${o.houseInfo.hhHouseAddress}</td>
 
-                                <td>${o.user.hhUserName}</td>
-                                <td>${o.user.hhUserTel}</td>
+                        <td>${o.user.hhUserName}</td>
+                        <td>${o.user.hhUserTel}</td>
 
-                                <td><fmt:formatDate value="${o.hhOrdersIntime}" pattern="yyyy-MM-dd"/></td>
-                                <td><fmt:formatDate value="${o.hhOrdersOuttime}" pattern="yyyy-MM-dd"/></td>
-                                <td>${o.hhOrdersPrice}</td>
-                                <td>${o.hhOrdersRemarks}</td>
-                            </tr>
+                        <td><fmt:formatDate value="${o.hhOrdersIntime}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${o.hhOrdersOuttime}" pattern="yyyy-MM-dd"/></td>
+                        <td>${o.hhOrdersPrice}</td>
+                        <td>${o.hhOrdersRemarks}</td>
+                    </tr>
 
                 </c:forEach>
                 </tbody>
+                <tr>
+                    <td colspan="14" style="text-align: center;">
+                        <% int count = (int) request.getAttribute("paging");
+                            int start = 1;
+                            if (count > 10) {
+                                start = count - 10;
+                                // System.out.println(start+"*1*"+count);
+                            }
+                        %>
+                        <c:if test="${paging>2}">
+                            <a href=${ctx}/personal/order/findPagingList/${status}/<%=count-1%> class="a12">上一页</a>
+                        </c:if>
+                        <% for (; start <= count; start++) { %>
+                        <%if(start==count){
+                           // System.out.println(start+"*2*"+count);
+                        %>
+                            <a href="#" class="a11"><%=start%>
+                            </a>
+                       <% }else {%>
+
+                            <a href=${ctx}/personal/order/findPagingList/${status}/<%=start%> class="a12"><%=start%></a>
+
+                        <%} }%>
+                        <% int len = ((List)request.getAttribute("orderList")).size();
+
+                            if(len==10){
+                        %>
+                            <a href=${ctx}/personal/order/findPagingList/${status}/<%=count+1%> class="a12">下一页</a>
+                        <% } %>
+                    </td>
+                </tr>
+
             </table>
         </div>
 

@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../baselist.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -8,6 +9,23 @@
 <head>
     <title>全部订单</title>
     <script src="${ctx}/staticfile/js/jquery-1.6.2.js"></script>
+    <style>
+        .a12 {
+            width: 40px;
+            height: 20px;
+            background-color: #27da93;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .a11 {
+            width: 40px;
+            height: 20px;
+            display: inline-block;
+            background-color: #8e8e8e;
+            margin: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +46,7 @@
     </div>
 
     <div class="textbox-title">
-        <img src="../../staticfile/skin/default/images/icon/currency_yen.png"/>
+        <img src="${ctx}/staticfile/skin/default/images/icon/currency_yen.png"/>
         全部订单
     </div>
 
@@ -59,7 +77,7 @@
                 </tr>
                 </thead>
                 <tbody class="tableBody">
-                <c:forEach items="${orderList}" var="o" varStatus="status">
+                <c:forEach items="${orderList}" var="o" varStatus="status" >
                         <c:if test="${o.hhOrdersStatus!=11&&o.hhOrdersStatus!=12}">
                             <tr class="odd" onmouseover="this.className='highlight'" onmouseout="this.className='odd'">
                                 <td><input type="checkbox" name="hhOrdersId" value="${o.hhOrdersId}"/></td>
@@ -99,7 +117,37 @@
                         </c:if>
 
                 </c:forEach>
+
                 </tbody>
+                <tr>
+                    <td colspan="14" style="text-align: center;">
+
+                        <% int count = (int) request.getAttribute("paging");
+                            int start = 1;
+                            if (count > 10) {
+                                start = count - 10;
+                                // System.out.println(start+"*1*"+count);
+                            }
+                        %>
+                    <c:if test="${paging>2}">
+                        <a href=${ctx}/personal/order/pagingList/<%=count-1%> class="a12"><上一页</a>
+                    </c:if>
+                    <% for (; start <= count; start++) { %>
+                    <%if(start==count){
+                        // System.out.println(start+"*2*"+count);
+                    %>
+                    <a href="#" class="a11"><%=start%></a>
+                    <% }else {%>
+                        <a href="${ctx}/personal/order/pagingList/<%=start%> class="a12"><%=start%></a>
+                    <%} }%>
+                    <% int len = ((List)request.getAttribute("orderList")).size();
+
+                        if(len==10){
+                    %>
+                    <a href=${ctx}/personal/order/pagingList/<%=count+1%> class="a12">下一页></a>
+                    <% } %>
+                    </td>
+                </tr>
             </table>
         </div>
 

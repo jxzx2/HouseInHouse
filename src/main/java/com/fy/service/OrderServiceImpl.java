@@ -6,14 +6,13 @@ import com.fy.mapper.HouseInfoMapper;
 import com.fy.mapper.MessageMapper;
 import com.fy.mapper.OrderMapper;
 import com.fy.mapper.UserMapper;
-import com.fy.pojo.HouseInfo;
-import com.fy.pojo.Order;
-import com.fy.pojo.SMessage;
-import com.fy.pojo.User;
+import com.fy.pojo.*;
 import com.fy.tools.SendCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -184,4 +183,42 @@ public class OrderServiceImpl implements OrderService {
     public void auto(){
         System.out.println("OrderServiceImpl定时任务中");
     }
+
+
+
+    @Override
+    public List<Order> findPagingListById(User user ,Integer index) {
+        Integer suffix=10;
+        Integer perfix=index*10-9;
+
+        return orderMapper.findPagingListById(user.getHhUserId() ,perfix,suffix);
+    }
+
+    @Override
+    public List<Order> findOrdersPagingByStatus(int status, Integer index) {
+        Integer suffix=10;
+        Integer perfix=index*10-9;
+        return orderMapper.findOrdersPagingByStatus(status,perfix,suffix);
+
+    }
+
+    @Override
+    public List<Order> findAllPaging(Integer index) {
+        Integer suffix=10;
+        Integer perfix=index*10-9;
+        return orderMapper.findAllPaging(perfix,suffix);
+    }
+
+    private boolean isAdmin(List<Role> roleList){
+        for (Role role:roleList){
+            if("管理员".equals(role.getName())){
+               return true;
+            }
+        }
+        return false;
+
+    }
+
+
+
 }
